@@ -1,0 +1,217 @@
+<%- include('../layouts/homeheader.ejs') %>
+
+
+
+    <!-- ***** Main Banner Area Start ***** -->
+    <!-- <div class="page-heading" id="top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="inner-content">
+                    <h2>Check Our Products</h2>
+                    <span>Awesome &amp; Creative HTML CSS layout by TemplateMo</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+    <!-- ***** Main Banner Area End ***** -->
+
+
+    <!-- ***** Products Area Starts ***** -->
+    <section class="section mt-5" id="products">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+
+                        <span>Check out all of our products.</span>
+                    </div>
+                    <div class="d-flex align-items-end flex-column">
+                        <p class="">
+                            <a class="btn border-0" data-toggle="collapse" href="#collapseExample" role="button"
+                                aria-expanded="false" aria-controls="collapseExample">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-filter" viewBox="0 0 16 16">
+                                    <path
+                                        d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+                                </svg>
+                                Filter
+                            </a>
+                        </p>
+                        <div class="collapse col-md-12 bg-light border-rounded" id="collapseExample">
+                            <div class="card card-body bg-transparent border-0">
+                                <% categoryData.forEach((category) => {%>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" onclick="filterCategory()" class="custom-control-input" id="<%= category.categoryName %>" name="category" value="<%= category.categoryName %>">
+                                    <label class="custom-control-label" for="<%= category.categoryName %>"><%= category.categoryName %></label>
+                                </div>
+                                <%}); %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row" id="placeHolder">
+                <% productData.forEach((products)=> { %>
+
+
+                    <div class="col-lg-4">
+                        <div class="item">
+                            <div class="thumb">
+                                <div class="hover-content">
+                                    <ul>
+                                        <li><a href="/single-product?id=<%=products._id%>"><i class="fa fa-eye"></i></a>
+                                        </li>
+                                        <li><a href="/addwishList?id=<%= products._id %>"><i><svg
+                                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-suit-heart-fill"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z" />
+                                                    </svg></i></a></li>
+                                        <li><a href="/addToCart?id=<%= products._id %>"><i
+                                                    class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <img src="/product-img/<%= products.image[0]  %>" alt="" width="50px">
+                            </div>
+                            <div class="down-content">
+                                <h4>
+                                    <%= products.productName %>
+                                </h4>
+                                <span>Rs.<%=products.price %></span>
+                                <ul class="stars">
+                                    <li><i class="fa fa-star"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <% }); %>
+
+
+
+
+                        <div class="col-lg-12">
+                            <div class="pagination">
+                                <ul>
+                                    <li class="active">
+                                        <a href="#">1</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">2</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">3</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">4</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">5</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Products Area Ends ***** -->
+
+    <!-- ***** Footer Start ***** -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="first-item">
+                        <div class="logo">
+                            <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="under-footer">
+                        <ul>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+
+        function filterCategory() {
+            let category = $('input[name=category]:checked').map(function() {
+                return this.value
+            }).get();
+        $.ajax({
+            type: 'POST',
+            url: '/filterCategory', 
+            data:{
+                category: category
+            },
+            success: function(response) {
+                console.log(response.filterCategory)
+                $('#placeHolder').html('')
+                const filtered = response.filterCategory
+
+                    
+
+                    filtered.forEach((products)=> { 
+                        $('#placeHolder').append(
+
+                    `<div class="col-lg-4">
+                        <div class="item">
+                            <div class="thumb">
+                                <div class="hover-content">
+                                    <ul>
+                                        <li><a href="/single-product?id=${products._id}"><i class="fa fa-eye"></i></a>
+                                        </li>
+                                        <li><a href="/addwishList?id=${products._id}"><i><svg
+                                                        xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-suit-heart-fill"
+                                                        viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z" />
+                                                    </svg></i></a></li>
+                                        <li><a href="/addToCart?id=${products._id}"><i
+                                                    class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <img src="/product-img/${products.image[0]}" alt="" width="50px">
+                            </div>
+                            <div class="down-content">
+                                <h4>
+                                    ${products.productName}
+                                </h4>
+                                <span>Rs.${products.price}</span>
+                                <ul class="stars">
+                                    <li><i class="fa fa-star"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>`
+                    )}
+                )
+                }
+            })
+        }
+    </script>
+
+    <%- include('../layouts/homefooter') %>

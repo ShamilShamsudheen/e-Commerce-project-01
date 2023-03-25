@@ -1,0 +1,89 @@
+<%- include('../layouts/homeheader.ejs') %>
+<!-- ***** Main Banner Area Start ***** -->
+<div class="" id="top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="inner-content">
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ***** Main Banner Area End ***** -->
+<div class="container-fluid">
+    <div class="row py-5 justify-content-center">
+        <div class="col col-lg-10">
+            <div class="card">
+                <div class="card-body">
+                    <p class="text-center fs-4 text-dark">Your Details</p>
+                    <hr>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6 m-5">
+                            <table class="table table-bordered ">
+                                <% if(userData){ %>
+                                    <tbody>
+                                        <tr>
+                                            <td class="col-lg-3">User Name</td>
+                                            <td class="text-dark"><%= userData.name %></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-lg-3">Email</td>
+                                            <td class="text-dark"><%= userData.email %></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="col-lg-3">Mobile Number</td>
+                                            <td class="text-dark"><%= userData.mobile %></td>
+                                        </tr>
+                                        <!-- <tr>
+                                            <td class="" colspan="2"><a href="" class="btn btn-primary">Edit</a></td>
+                                        </tr> -->
+                                    </tbody>
+                              <% } %>    
+                            </table>
+                            
+                            <p>
+                                <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseExample" aria-expanded="false"
+                                    aria-controls="collapseExample">
+                                    Change Password
+                                </button>
+                            </p>
+                            <div class="collapse" id="collapseExample">
+                                <div class="card card-body">
+                                    <form class="row g-3 needs-validation" method="post">
+                                        <div class="col-md-12">
+                                            <label for="validationCustom01" class="form-label">Old Password</label>
+                                            <input type="text" class="form-control" id="validationCustom01"
+                                                name="oldPassword" required>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label for="validationCustom02" class="form-label">New Password</label>
+                                            <input type="text" class="form-control" id="validationCustom02"
+                                                name="newPassword" required>
+                                        </div>
+                                        
+                                        <% if(typeof pMessage!='undefined' ){ %>
+
+                                            <p style="color: rgb(160, 20, 10);">
+                                                <%= pMessage %>
+                                            </p>
+                    
+                                            <% } %>
+                                        <div class="col-12">
+                                            <button class="btn btn-primary" type="submit">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../layouts/homefooter.ejs') %>

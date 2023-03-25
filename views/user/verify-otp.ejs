@@ -1,0 +1,41 @@
+<%- include('../layouts/header.ejs') %>
+
+<div class="limiter">
+    <div class="container-login100" style="background-image: url('images/bg-01.jpg');">
+        <div class="wrap-login100 p-t-30 p-b-50">
+            <span class="login100-form-title p-b-41">
+                OTP Verification
+            </span>
+            <form class="login100-form validate-form p-b-33 p-t-5" method="post">
+
+                <div class="container-login100-form-btn m-t-32">
+                    <p>Enter OTP no.</p>
+                </div>
+
+                <div class="wrap-input100 validate-input" data-validate="Enter OTP no">
+                    <input class="input100" type="string" name="otp" placeholder="OTP No">
+                    <span class="focus-input100" data-placeholder="&#xe80f;"></span>
+                </div>
+
+                <div class="container-login100-form-btn m-t-32">
+                    <% if(typeof pMessage!='undefined' ){ %>
+
+                        <p style="color: rgb(160, 20, 10);">
+                            <%= pMessage %>
+                        </p>
+
+                        <% } %>
+                            <button class="login100-form-btn" type="submit">
+                                Verify
+                            </button>
+                </div>
+
+                
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<%- include('../layouts/footer.ejs') %>

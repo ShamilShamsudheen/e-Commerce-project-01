@@ -1,0 +1,184 @@
+<%- include('../layouts/adminheader.ejs') %>
+<div class="row mx-1">
+  <div class="card col-md-6">
+    <h5 class="card-header">Order Details</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Total Price</th>
+
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <% productDetails.forEach((product)=> {%>
+
+
+            <tr>
+              <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>
+                  <%= product.productId.productName %>
+                </strong></td>
+              <td>
+                x<%= product.quantity %>
+              </td>
+              <td>
+                Rs.<%= product.productId.price %>
+              </td>
+              <td><span class="badge bg-label-primary me-1">
+                  Rs.<%= product.price%>
+                </span></td>
+              <td>
+
+              </td>
+            </tr>
+            <%}); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card mb-4 mx-3 col-md-5">
+    <div class="card-body">
+      <h5 class="card-title">Order Summary</h5>
+      <hr>
+      <div class="row">
+        <div class="col-8">
+          <p>Ordered Date</p>
+        </div>
+        <div class="col-4">
+          <p class="card-text">
+            <%= orderDetails.date.toISOString().slice(0,10) %>
+          </p>
+        </div>
+      </div><hr>
+      <div class="row">
+        <div class="col-8">
+          <p>price</p>
+        </div>
+        <div class="col-4">
+          <p class="card-text">
+            Rs.<%= orderDetails.totalPrice %>
+          </p>
+        </div>
+      </div><hr>
+      <div class="row">
+        <div class="col-8">
+          <p>Coupon Offer</p>
+        </div>
+        <div class="col-4">
+          <p>-Rs.00</p>
+        </div>  
+      </div><hr>
+      <div class="row">
+        <div class="col-8">
+          <p>Discount</p>
+        </div>
+        <div class="col-4">
+          <p>-Rs.00</p>
+        </div>  
+      </div><hr>
+      <div class="row mt-2">
+        <div class="col-8">
+          <p>Total Price</p>
+        </div>
+        <div class="col-4">
+          <h3 class="card-text">
+            <span class="badge bg-label-success me-1">rs.<%= orderDetails.totalPrice %></span>
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mx-2 ">
+  <div class="card mb-4 mt-5 col-md-5">
+    <div class="card-body">
+      <h5 class="card-title">Customer and Order Details</h5>
+      <hr>
+      <div class="row">
+        <div class="col-8">
+          <p>Customer Name</p>
+        </div>
+        <div class="col-4">
+          <p class="card-text">
+            <%= userDetails.name %>
+          </p>
+        </div>
+      </div><hr>
+      <div class="row">
+        <div class="col-8">
+          <p>Mobile No.</p>
+        </div>
+        <div class="col-4">
+          <p class="card-text">
+            <%= userDetails.mobile %>
+          </p>
+        </div>
+      </div><hr>
+      <div class="row">
+        <div class="col-8">
+          <p>Order Status</p>
+        </div>
+        <%= orderDetails.status %>
+      </div><hr>
+      <div class="row mt-2">
+        <div class="col-8">
+          <p>Payment Method</p>
+        </div>
+        <div class="col-4">
+          <p class="card-text">
+            <span class="badge bg-label-success me-1"><%= orderDetails.payment %></span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card mb-4 mx-2 mt-5 col-md-4">
+    <div class="card-body">
+      <h5 class="card-title">Delivery Address</h5>
+      <hr>
+      <div class="row ">
+        <div class="col-12">
+          <p>Address Line:<%= addressDetails.address %></p>
+        </div>
+      </div>
+      <div class="row ">
+        <div class="col-12">
+          <p>Land-mark:<%= addressDetails.landmark %></p>
+        </div>
+      </div>
+      <div class="row ">
+        <div class="col-12">
+          <p>Pincode:<%= addressDetails.pincode %></p>
+        </div>
+      </div>
+      <div class="row ">
+        <div class="col-12">
+          <p>State:<%= addressDetails.state %></p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <div class="col-md-3 mx-2">
+    <div class="row ">
+      <div class="col-12">
+        <form action="" method="post">
+          <div class="mb-3">
+            <label for="exampleFormControlSelect1" class="form-label">Order staus update</label>
+            <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example" name="status">
+              <option selected>Open this select menu</option>
+              <option value="Shipped">Shipped</option>
+              <option value="Out of Delivered">Out of Delivered</option>
+              <option value="Delivered">Delivered</option>
+            </select>
+            <button type="submit" class="btn btn-primary mt-2 ">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  <%- include('../layouts/adminfooter.ejs') %>

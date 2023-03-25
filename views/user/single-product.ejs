@@ -1,0 +1,151 @@
+<%- include('../layouts/homeheader') %>
+
+
+
+<!-- ***** Main Banner Area Start ***** -->
+<div class="" id="top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="inner-content">
+                    <h2>Single Products</h2>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ***** Main Banner Area End ***** -->
+
+
+<!-- ***** Product Area Starts ***** -->
+<section class="section" id="product">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 ">
+                
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner " style="width: 60%;">
+                        <div class="carousel-item active">
+                            <img src="/product-img/<%= product.image[0] %>" class="d-block img-fluid rounded" alt="product-image">
+                          </div>
+                        <% for (let index = 1; index < product.image.length; index++){ %>
+                      <div class="carousel-item ">
+                        <img src="/product-img/<%= product.image[index] %>" class="d-block img-fluid rounded" alt="product-image">
+                      </div>
+                      <%}; %>
+                      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                      </button>
+                    </div>
+                    
+                  </div>
+            </div>
+        <div class="col-lg-6 ">
+            <div class="right-content">
+                <h4> <%= product.productName %> </h4>
+                <!-- <span class="text-dark">₹<%= product.price %></span> -->
+                <ul class="stars">
+                    <li><i class="fa fa-star"></i></li>
+                    <li><i class="fa fa-star"></i></li>
+                    <li><i class="fa fa-star"></i></li>
+                    <li><i class="fa fa-star"></i></li>
+                    <li><i class="fa fa-star"></i></li>
+                </ul>
+                <span><%= product.description %></span>
+                
+                <!-- <div class="quantity-content">
+                    <div class="left-content">
+                        <h6>No. of Orders</h6>
+                    </div>
+                    <div class="right-content">
+                        <div class="quantity buttons_added">
+                            <input type="button" value="-" class="minus"><input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="" inputmode="" disabled><input type="button" value="+" class="plus">
+                        </div>
+                    </div>
+                </div> -->
+                <div class="total">
+                    <h4>Total:₹<%= product.price %></h4>
+                    <div class="main-border-button"><a href="/addToCart?id=<%= product._id %>">Add To Cart</a></div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+<!-- ***** Product Area Ends ***** -->
+
+<!-- ***** Footer Start ***** -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="first-item">
+                    <div class="logo">
+                        <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
+                    </div>
+                    <ul>
+                        <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
+                        <li><a href="#">hexashop@company.com</a></li>
+                        <li><a href="#">010-020-0340</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <h4>Shopping &amp; Categories</h4>
+                <ul>
+                    <li><a href="#">Men’s Shopping</a></li>
+                    <li><a href="#">Women’s Shopping</a></li>
+                    <li><a href="#">Kid's Shopping</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3">
+                <h4>Useful Links</h4>
+                <ul>
+                    <li><a href="#">Homepage</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3">
+                <h4>Help &amp; Information</h4>
+                <ul>
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">FAQ's</a></li>
+                    <li><a href="#">Shipping</a></li>
+                    <li><a href="#">Tracking ID</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-12">
+                <div class="under-footer">
+                    <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
+                    
+                    <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a>
+
+                    <br>Distributed By: <a href="https://themewagon.com" target="_blank" title="free & premium responsive templates">ThemeWagon</a></p>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                        <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<%- include('../layouts/homefooter') %>
+
+<!-- <div class="left-images">
+    <% product.image.forEach((item) => {%>               
+    <img src="/product-img/<%= item %>" alt="">
+    <%}); %>
+</div> -->

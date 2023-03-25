@@ -1,0 +1,91 @@
+<%- include('../layouts/homeheader.ejs') %>
+<style>
+    .ordr-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin: 85px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        max-width: 600px;
+    }
+    .ordr-container .order-btn{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .ordr-container .order-btn a{
+        margin:15px auto ;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .ordr-container h1 {
+        margin-top: 25px;
+        font-size: 36px;
+        color: #0d8100;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .ordr-container img{
+        text-align: center;
+        justify-self: center;
+    }
+    .ordr-container table {
+        margin-top: 10px;
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    .ordr-container td {
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+    
+    .ordr-container td:first-child {
+        width: 150px;
+        font-weight: bold;
+    }
+    
+    .ordr-container  p {
+        text-align: center;
+    }
+    
+</style>
+    <div id="page" class="site page-home mt-5"  >
+        
+            <!-- header-main -->
+
+        </header>
+        <!-- Header -->
+        <main>
+            <div class="ordr-container ">
+                <img src="/userAssets/Images/Tick Image.png" alt="" width="80">
+                <h1>Order Confirmed</h1>
+                <p>Your order has been confirmed and will be shipped soon</p>
+                <!--  -->
+                <div class="order-btn">
+                    <a href="/products" class="btn btn-success">Continue Shopping</a>
+                    <a href="/order-details" class="btn btn-success">Track Order</a>     
+                </div>
+                <p>Thank you for shopping with us!</p>
+        </main>
+        <!-- Main -->
+
+        
+        <!-- Footer -->
+
+        
+        <!-- menu bottom -->
+
+        
+        <!-- search bottom -->
+
+        <div class="overlay"></div>
+    </div>
+    <%- include('../layouts/homefooter.ejs') %>

@@ -1,0 +1,150 @@
+<%- include('../layouts/adminheader.ejs') %>
+
+  <h1>Sales Report</h1>
+  
+  <form action="/admin/salesPdf" method="post">
+    <button type="submit" class="btn btn-primary align-items-end mb-3">Export PDF</button>
+    <div class="mx-2 mb-3 row">
+      <div class=" row col-md-4">
+        <label for="html5-text-input" class="col-md-4 col-form-label">From date:</label>
+        <div class="col-md-8">
+          <input class="form-control" type="date" name="fromDate" id="fromDate" />
+        </div>
+      </div>
+      <div class=" row col-md-4">
+        <label for="html5-text-input" class="col-md-4 col-form-label">To date:</label>
+        <div class="col-md-8">
+          <input class="form-control" type="date" name="toDate" id="toDate" />
+        </div>
+      </div>
+      <!-- <div class=" row col-md-4">
+        <div class="col-md-8">
+            <a href=""  class="btn btn-primary">submit</a>
+
+
+
+
+        </div>
+      </div> -->
+    </div>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Product Details</th>
+          <th>quantity</th>
+          <th>date</th>
+          <th>Price</th>
+          <th>Payment Mode</th>
+        </tr>
+      </thead>
+      <tbody id="tableData">
+        <% salesData.forEach((sales)=> {%>
+          <tr>
+            <td>
+              <%= sales.userId.name %>
+            </td>
+            <td>
+              <% sales.productDetails.forEach((product)=> {%>
+                <%= product.productId.productName %> <br> <hr>
+                    <%}); %> 
+            </td>
+            <td>
+              <% sales.productDetails.forEach((product)=> {%>
+                  x<%= product.quantity %> <br> <hr>
+                    <%}); %> 
+            </td>
+            <td>
+              <%= sales.date.toISOString().slice(0,10) %>
+            </td>
+            <td class="subTotal">
+              <%= sales.totalPrice %>
+            </td>
+            <td>
+              <%= sales.payment %>
+            </td>
+          </tr>
+          <%}); %>
+      </tbody>
+      <tfoot>
+        <!-- <tr>
+          <td colspan="3">Total Sales: ₹<span id="totalSum"></span></td>
+        </tr>
+      </tfoot> -->
+    </table>
+  </form>
+  <script>
+    // const classValues = document.querySelectorAll('.subTotal');
+    // let totalSum = 0;
+    // for (let index = 0; index < classValues.length; index++) {
+    //   totalSum += parseFloat(classValues[index].innerHTML);
+
+    // }
+    // document.getElementById('totalSum').innerHTML = totalSum;
+    // console.log(totalSum);
+
+    //datae filter
+    function handleDateSelection(date1, date2) {
+      console.log(date1, date2);
+      $.ajax({
+        type: "POST",
+        url: '/admin/filterReport',
+        data: {
+          dateFrom: date1,
+          dateTo: date2
+        },
+        success: (response) => {
+          console.log(response.orderDetails);
+          if (response.orderDetails) {
+            $('#tableData').html('');
+            const orderDetails = response.orderDetails;
+            orderDetails.forEach((order) => {
+              const date = new Date(order.date)
+              const formattedDate = date.toISOString().slice(0, 10)
+              let productName;
+              let quantity;
+              order.productDetails.forEach((order) => {
+                productName = order.productId.productName;
+                quantity = order.quantity;
+              })
+              $('#tableData').append(`
+              <tr>
+            <td>${order.userId.name}</td>
+            <td>
+              
+                ${productName}<br><hr>
+                
+               <br>
+            </td>
+            <td>
+              x${quantity}<br><hr>
+            </td>
+            <td>${formattedDate}</td>
+            <td class="subTotal">${order.totalPrice}</td>
+            <td>
+              ${order.payment}
+            </td>
+            
+          </tr>
+              `)
+            });
+          }
+        }
+      })
+
+    }
+    const date1 = document.getElementById('fromDate')
+    const date2 = document.getElementById('toDate')
+
+    date1.addEventListener("change", function () {
+      handleDateSelection(date1.value, date2.value)
+    })
+    date2.addEventListener("change", function () {
+      handleDateSelection(date1.value, date2.value)
+    })
+
+  </script>
+
+
+  <%- include('../layouts/adminfooter.ejs') %>

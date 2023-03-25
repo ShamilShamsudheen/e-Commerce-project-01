@@ -1,0 +1,81 @@
+<%- include('../layouts/header.ejs') %>
+
+    <div class="limiter">
+        <div class="container-login100" style="background-image: url('images/bg-01.jpg');">
+            <div class="wrap-login100 p-t-30 p-b-50">
+                <span class="login100-form-title p-b-41">
+                    Create Account
+                </span>
+                <form class="login100-form validate-form p-b-33 p-t-5" method="post">
+                    <% if(typeof fMessage!='undefined' ){ %>
+
+                        <p style="color: rgb(218, 41, 29);">
+                            <%= fMessage %>
+                        </p>
+
+                        <% } %>
+
+                            <div class="wrap-input100 validate-input" data-validate="Enter username">
+                                <input class="input100" type="text" name="name" placeholder="User name">
+                                <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                            </div>
+
+                            <div class="wrap-input100 validate-input" data-validate="Enter username">
+                                <input class="input100" type="text" name="email" placeholder="Email id">
+                                <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                                <% if(typeof errMessage!='undefined' ){ %>
+
+                                    <p style="color: rgb(160, 10, 10);">
+                                        <%= errMessage %>
+                                    </p>
+
+                                    <% } %>
+                            </div>
+                            <div class="wrap-input100 validate-input" data-validate="Enter Mobile No.">
+                                <input class="input100" type="text" name="mobile" placeholder="Mobile No.">
+                                <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                            </div>
+                            <div class="wrap-input100 validate-input" data-validate="Enter password">
+                                <input class="input100" type="password" name="password" placeholder="Password">
+                                <span class="focus-input100" data-placeholder="&#xe80f;"></span>
+                            </div>
+
+                            <div class="wrap-input100 validate-input" data-validate="Enter password">
+                                <input class="input100" type="repassword" name="repassword" placeholder="Re-Password">
+                                <span class="focus-input100" data-placeholder="&#xe80f;"></span>
+                                <% if(typeof passwordErr!='undefined' ){ %>
+
+                                    <p style="color: rgb(160, 10, 10);">
+                                        <%= passwordErr %>
+                                    </p>
+
+                                    <% } %>
+                            </div>
+
+                            <div class="container-login100-form-btn m-t-32">
+                                <button class="login100-form-btn">
+                                    Sign up
+                                </button>
+                            </div>
+                            <div class="container-login100-form-btn m-t-32">
+                                <p><a href="/login-otp">login with OTP</a></p>
+                            </div>
+                            <% if(typeof message!='undefined' ){ %>
+
+                                <p style="color: rgb(40, 160, 10);">
+                                    <%= message %>
+                                </p>
+
+                                <% } %>
+                                <div class="container-login100-form-btn m-t-32">
+                                    <p>already have a Account</p><a href="/" style="color: blue;">Sign in</a>
+                                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <%- include('../layouts/footer.ejs') %>

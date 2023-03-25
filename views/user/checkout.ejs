@@ -1,0 +1,287 @@
+<%- include('../layouts/homeheader.ejs') %>
+  <form id="checkout-form" action="" method="post" id="checkoutForm">
+    <section class="h-100" style="background-color: #eee; padding-top: 80px;">
+
+      <div class="container-fluid h-100 py-5">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h3 class="fw-normal mb-0 text-black">Checkout</h3>
+            </div>
+            <div class="container-fluid">
+              <div class="row py-5">
+                <div class="col col-lg-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                          <h5 class="fw-normal mb-0 text-black">Address Information</h5>
+                          <% userAddress.forEach((profile)=>{%>
+                            <div class="form-check mt-5">
+                              <input class="form-check-input" type="radio" value="<%= profile._id %>" name="address_id"
+                                id="flexRadioDefault1">
+                              <div class="card bg-light mb-3">
+                                <div class="card-body">
+                                  <p class="fw-bold">
+                                    <%= profile.name %>
+                                  </p>
+                                  <p>
+                                    <%= profile.email %><br>
+                                      <%= profile.mobile %><br>
+                                        <%= profile.address %><br>
+                                          <%= profile.state %><br>
+                                            <%= profile.landmark %><br>
+                                              <%= profile.pincode %><br>
+                                  </p><br><a href="/edit-address/?id=<%= profile._id %>" class="btn btn-dark">Edit</a>
+                                </div>
+                                </label>
+                              </div>
+                            </div>
+                            <%}) %>
+                        </div>
+                        <div class="col-lg-4 border-rounded">
+                          <h5 class="fw-normal mb-0 text-black">Order Information</h5>
+                          <div class="card-body p-4 flex-row">
+                            <label class="form-label" for="form1">Discound code</label>
+                            <div class="form-outline d-flex flex-fill mt-3">
+                              <input type="text" id="couponCode" class="form-control form-control-lg" />
+                              <button id="applyBtn" type="button" onclick="couponFunction()" class="btn btn-primary btn-sm ms-3">Apply</button>
+                            </div>
+                            <p style="color: red;" id="couponErr"></p>
+                          </div>
+                          <div class="row mb-4 mt-2 mx-3">
+                            <div class="row mt-2">
+                              <div class="col-8">
+                                <p class="fw-bold">Sub total</p>
+                              </div>
+                              <div class="col-4">
+                                <p class="card-text fw-bold">₹<%= totalPrice %>.00
+                                </p>
+                              </div>
+                            </div>
+                            <div class="row mt-2">
+                              <div class="col-8">
+                                <p class="fw-bold">Cuopon Code</p>
+                              </div>
+                              <div class="col-4">
+                                <p class="card-text fw-bold " id="couponName">
+                                </p>
+                              </div>
+                            </div>
+                            <div class="row mt-2">
+                              <div class="col-8">
+                                <p class="fw-bold">Cuopon Discount</p>
+                              </div>
+                              <div class="col-4">
+                                <p class="card-text fw-bold">-₹<span id="couponAmount">0</span>.00
+                                </p>
+                              </div>
+                            </div>
+                            <div class="row mt-2">
+                              <div class="col-8">
+                                <p class="fw-bold">Grand Total</p>
+                              </div>
+                              <div class="col-4">
+                                <p class="card-text fw-bold fs-4">₹<span id="grandTotal"><%= totalPrice %></span>.00
+                                </p>
+                              </div>
+                            </div>
+                            <div class="col-12 mt-4">
+                              <input class="form-check-input" type="radio" name="paymentMethod" id="flexRadioDefault1"
+                                value="COD">
+                              <label>Cash on Delivery</label>
+                            </div>
+                            <div class="col-12">
+                              <input class="form-check-input" type="radio" name="paymentMethod" id="flexRadioDefault1"
+                                value="Razor pay">
+                              <label>Razor pay</label>
+                            </div>
+                          </div>
+
+                          <div class="card">
+                            <div class="card-body">
+                              <button type="submit" id="placeOrder"
+                                class="btn btn-warning btn-block btn-lg border-rounded">Place Order</button>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="row d-flex justify-content-center align-items-center h-100">
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+    </section>
+  </form>
+  <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+
+  <!-- <script>
+    document.getElementById("placeOrder").addEventListener("click", function(event) {
+    event.preventDefault(); // prevent the link from redirecting immediately
+    swal({
+        title: "Thank you",
+        text: "Order placed ",
+        icon: "success",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willPlaced) => {
+        if (willPlaced) {
+            document.getElementById('checkoutForm').submit();
+            
+        } else {
+            // If user clicks the cancel button, do nothing
+        }
+    });
+  });
+
+  </script> -->
+  <script>
+    // Razor Payment
+    $("#checkout-form").submit((e) => {
+      let payment = $('input[name=paymentMethod]:checked').val();
+      let address = $('input[name=address_id]:checked').val();
+      e.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: '/checkout',
+        data: {
+          address_id: address,
+          paymentMethod: payment
+        },
+        success: (response) => {
+          if (response.success) {
+            location.href = '/paymentConformation'
+            console.log(response)
+          } else {
+            console.log(response.order)
+            razorPayment(response.order)
+           
+          }
+        },
+      })
+    })
+    function razorPayment(order) {
+      var options = {
+        "key": "rzp_test_0vbCde7Y7dbvTg", // Enter the Key ID generated from the Dashboard
+        "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "Hexashop", //your business name
+        "description": "Test Transaction",
+        "image": "https://example.com/your_logo",
+        "order_id": order.id, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response) {
+          verifyPayment(response, order)
+        },
+        "prefill": {
+          "name": "userData.name", //your customer's name
+          "email": "userData.email",
+          "contact": "userData.mobile"
+        },
+        "notes": {
+          "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+          "color": "#ff6b6b"
+        }
+      };
+      var rzp1 = new Razorpay(options);
+      rzp1.open();
+    }
+    function verifyPayment(payment, order) {
+      $.ajax({
+        type: "POST",
+        url: "/verifyPayment",
+        data: {
+          order,
+          payment
+        },
+        success: function (response) {
+          if (response.success) {
+            console.log('Order Success')
+            
+            location.href = '/paymentConformation'
+          } else {
+            console.log('Order Failed')
+          }
+        }
+      })
+    }
+
+    function couponFunction() {
+      const couponCode=document.getElementById("couponCode").value
+      $.ajax({
+        type: "POST",
+        url: "/applyCoupon",
+        data: {couponCode:couponCode},
+        success: function (response) {
+          if (response.success) {
+                        let coupon = response.couponDetails
+                        document.getElementById("couponErr").innerHTML = ""
+                        if(response.userUsed){
+                            document.getElementById("couponErr").innerHTML = "This Coupon code already used"
+                        }
+                        else if (response.totalUsageErr) {
+                            document.getElementById("couponErr").innerHTML = "The Coupon code you entered is fully claimed"
+                        }
+                        else if (response.expiryDateErr) {
+                            document.getElementById("couponErr").innerHTML = "The Coupon code you entered expired"
+                        } else if (response.minOrderErr) {
+                            document.getElementById("couponErr").innerHTML = "This Coupon is only valid for above " + coupon.minOrder
+                        } else {
+                            if (coupon.type == "Percentage") {
+                                let totalPrice = document.getElementById("grandTotal").innerHTML;
+                                let couponPercentage = coupon.value
+                                let couponDiscount = couponPercentage/100;
+                                let maxDiscount = coupon.maxDiscount;
+                                let discount = Number(totalPrice) * couponDiscount;
+                                if (discount > maxDiscount) {
+                                    discount = maxDiscount;
+                                }
+                                document.getElementById("couponName").innerHTML=coupon.code
+                                document.getElementById("couponAmount").innerHTML = discount
+                                document.getElementById("grandTotal").innerHTML = Number(totalPrice) - discount
+                                document.getElementById("applyBtn").innerHTML = "Remove";
+                                document.getElementById("couponCode").disabled = true;
+                            } else {
+                              console.log("kkjk");
+                                document.getElementById("couponName").innerHTML=coupon.code
+                                document.getElementById("couponAmount").innerHTML = coupon.value
+                                let totalPrice = document.getElementById("grandTotal").innerHTML;
+                                document.getElementById("grandTotal").innerHTML = Number(totalPrice) - coupon.value 
+                                document.getElementById("applyBtn").innerHTML = "Remove";
+                                document.getElementById("couponCode").disabled = true;
+                            }
+                        }
+                        console.log(response.CouponDetails)
+                    } else {
+                        if (response.applied) {
+                            let couponDis = document.getElementById("couponAmount").innerHTML;
+                            let totalPrice = document.getElementById("grandTotal").innerHTML;
+                            document.getElementById("couponName").innerHTML=""
+                            document.getElementById("grandTotal").innerHTML =   Number(totalPrice) + Number(couponDis)
+                            document.getElementById("couponAmount").innerHTML = "00.00";
+                            document.getElementById("applyBtn").innerHTML = "Apply";
+                            document.getElementById("couponCode").value = "";
+                            document.getElementById("couponCode").disabled = false;
+                        } else {
+                            document.getElementById("couponErr").innerHTML = "The Coupon code you entered is not valid."
+                        }
+                    }
+                },
+      })
+    }
+
+  </script>
+
+
+  <%- include('../layouts/homefooter.ejs') %>

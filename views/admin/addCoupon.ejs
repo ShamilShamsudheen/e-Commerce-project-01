@@ -1,0 +1,97 @@
+<%- include('../layouts/adminheader.ejs') %>
+    <div class="fluid-container ">
+        
+        <div class="card mb-4 container mt-5">
+            <h5 class="card-header text-center">Coupon Add Form</h5>
+            <form action="" method="post" >
+                <div class="card-body">
+                    <div class="mb-3 row">
+                        <div class=" row col-md-6">
+                            <label for="html5-text-input" class="col-md-4 col-form-label">Coupon code</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" name="code" id="html5-text-input" value=""/>
+                            </div>
+                        </div>
+                        <div class=" row col-md-6">
+                            <label for="html5-text-input" class="col-md-4 col-form-label">type</label>
+                            <div class=" row col-md-8">
+                                <div class="form-check col-md-6">
+                                    <input
+                                      name="type"
+                                      class="form-check-input"
+                                      type="radio"
+                                      value="flat"
+                                      id="defaultRadio1"
+                                    />
+                                    <label class="form-check-label" for="defaultRadio1"> flat </label>
+                                  </div>
+                                  <div class="form-check col-md-6">
+                                    <input
+                                      name="type"
+                                      class="form-check-input"
+                                      type="radio"
+                                      value="percentage"
+                                      id="defaultRadio2"
+                                    
+                                    />
+                                    <label class="form-check-label" for="defaultRadio2"> Percentage </label>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <div class=" row col-md-6">
+                            <label for="html5-text-input" class="col-md-4 col-form-label">value</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" name="value" id="html5-text-input" value=""/>
+                            </div>
+                        </div>
+                        <div class=" row col-md-6">
+                            <label for="html5-text-input" class="col-md-4 col-form-label">min order</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" name="minOrder" id="html5-text-input" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <div class=" row col-md-6">
+                            <label for="html5-text-input" class="col-md-4 col-form-label">max discount</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" name="maxDiscount" id="html5-text-input" />
+                            </div>
+                        </div>
+                        <div class=" row col-md-6">
+                            <label for="html5-text-input" class="col-md-4 col-form-label">total usage</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="text" name="totalUsage" id="html5-text-input" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        
+                        <div class=" row col-md-6">
+                            <label for="html5-text-input" class="col-md-4 col-form-label">expire date</label>
+                            <div class="col-md-8">
+                                <input class="form-control" type="date" name="expireDate" value="" id="html5-date-input" />
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="row col-md-4 mt-3">
+                        <% if(typeof message!='undefined' ){ %>
+
+                            <p style="color: rgb(160, 20, 10);">
+                                <%= message %>
+                            </p>
+
+                            <% } %>
+                        <div class="col-sm-5">
+                            <button type="" href="/admin/couponList" class="btn btn-primary text-white">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <%- include('../layouts/adminfooter.ejs') %>

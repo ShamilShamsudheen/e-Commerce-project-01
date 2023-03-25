@@ -1,0 +1,60 @@
+<%- include('../layouts/adminheader.ejs') %>
+  <div class="fluid-container">
+    <h1></h1>
+    <div class="table-responsive text-nowrap mt-5 container">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Order Id</th>
+            <th>Order Date</th>
+            <th>Total Price</th>
+            <th>Payment Method</th>
+            <th>Payment Status</th>
+            <th>Order Status</th>
+            <th>Status</th>
+            
+            <!-- <th>Action</th> -->
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <% orderData.forEach((orderData) => {%>
+            
+          
+            <tr>
+              <td>
+                <%= orderData._id.toString().slice(-5) %>
+              </td>
+              <td>
+                <%= orderData.date.toISOString().slice(0,10) %>
+              </td>
+              <td>
+                <%= orderData.totalPrice %>
+              </td>
+              <td>
+                <%= orderData.payment %>
+              </td>
+              <td>
+                <% if(orderData.paymentStatus == 'Pending'){%>
+                  
+                    <span class="badge bg-label-warning me-1">Pending</span>
+                  
+                <%}else{%>
+                  <span class="badge bg-label-success me-1">Payed</span>
+                <%}%>
+                
+              </td>
+              <td>
+               
+                <span class="btn btn-dark"><%= orderData.status %></span>
+              </td>
+              <td>
+                <a type="button" href="/admin/orderDetails/?id=<%= orderData._id %>" class="btn btn-dark text-white">more</a>
+              </td>
+            </tr>
+          <%}); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+<%- include('../layouts/adminfooter.ejs') %>

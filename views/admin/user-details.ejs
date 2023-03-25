@@ -1,0 +1,66 @@
+<%- include('../layouts/adminheader.ejs') %>
+  <div class="fluid-container">
+    
+    <div class="table-responsive text-nowrap mt-5 container">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>S/N</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile No.</th>
+            <th>Status</th>
+            <!-- <th>Action</th> -->
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <% users.forEach((user,index)=> {%>
+            <tr>
+                <td><%= index+1 %></td>
+              <td>
+                <%= user.name %>
+              </td>
+              <td>
+                <%= user.email %>
+              </td>
+              <td>
+                <%= user.mobile %>
+              </td>
+              <td>
+                <% if(user.status==true){%>
+                <a href="/admin/blockUser?id=<%= user._id %>" class="btn btn-danger" id="block-link">Block</a>
+                <% }else{ %>
+                    <a href="/admin/unblockUser?id=<%= user._id %>" class="btn btn-success">Unblock</a>
+                    <% } %>
+              </td>
+             
+            </tr>
+        </tbody>
+        <% }) %>
+      </table>
+    </div>
+  </div>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script>
+    document.getElementById("block-link").addEventListener("click", function(event) {
+    event.preventDefault(); // prevent the link from redirecting immediately
+    swal({
+        title: "Are you sure?",
+        text: "Once blocked,  user you will not be able to recover",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            // If user clicks the confirm button, redirect to the delete route
+            window.location.href = document.getElementById("block-link").href;
+        } else {
+            // If user clicks the cancel button, do nothing
+        }
+    });
+});
+
+  </script>
+
+  <%- include('../layouts/adminfooter.ejs') %>

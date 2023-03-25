@@ -1,0 +1,97 @@
+<%- include('../layouts/adminheader.ejs') %>
+  <div class="fluid-container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active fw-semibold" aria-current="page" href="/admin/add-product">Add
+                Product</a>
+            </li>
+          </ul>
+          
+        </div>
+      </div>
+    </nav>
+    <div class="table-responsive text-nowrap mt-5 container">
+      <table class="table table-bordered" id="table-setting">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Stock</th>
+            <th>Actions</th>
+            <th>Product Status</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <% productData.forEach(product=> {%>
+            <tr>
+              <td><img src="/product-img/<%= product.image[0] %>" width="50px" alt=""></td>
+              <td>
+                <%= product.productName %>
+              </td>
+              <td>
+                <%= product.price %>
+              </td>
+              <td>
+                <%= product.category %>
+              </td>
+              <td>
+                <%= product.stock %>
+              </td>
+              <td>
+                <div class="dropdown">
+                  <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <i class="bx bx-dots-vertical-rounded"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/admin/edit-product/?id=<%= product._id %>"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                    <!-- <a class="dropdown-item" href="/admin/delete-product/?id=<%= product._id %>"><i class="bx bx-trash me-1"></i> Delete</a> -->
+                  </div>
+                </div>
+              </td>
+              <td>
+                <% if(product.status==true){%>
+                  <a href="/admin/disableProduct?id=<%= product._id %>" class="btn btn-success" id="disable-link">Disable</a>
+                  <% }else{ %>
+                    <a href="/admin/enableProduct?id=<%= product._id %>" class="btn btn-danger">Enable</a>
+                      
+                      <% } %>
+              </td>
+            </tr>
+        </tbody>
+        <% }) %>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script>
+//     document.getElementById("disable-link").addEventListener("click", function(event) {
+//     event.preventDefault(); // prevent the link from redirecting immediately
+//     swal({
+//         title: "Are you sure?",
+//         text: "Once blocked,  user you will not be able to recover",
+//         icon: "warning",
+//         buttons: true,
+//         dangerMode: true,
+//     })
+//     .then((willDelete) => {
+//         if (willDelete) {
+//             // If user clicks the confirm button, redirect to the delete route
+//             window.location.href = document.getElementById("disable-link").href;
+//         } else {
+//             // If user clicks the cancel button, do nothing
+//         }
+//     });
+// });
+
+ 
+
+  </script>
+  <%- include('../layouts/adminfooter.ejs') %>

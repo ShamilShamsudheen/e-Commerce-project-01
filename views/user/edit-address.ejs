@@ -1,0 +1,76 @@
+<%- include('../layouts/homeheader.ejs') %>
+<!-- ***** Main Banner Area Start ***** -->
+<div class="page-heading" id="top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="inner-content">
+                    <h2>Edit Address</h2>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ***** Main Banner Area End ***** -->
+<div class="" id="top">
+<div class="container" id="collapseExample">
+    <div class="card card-body">
+        <form class="row g-3 needs-validation" method="post">
+            <input type="text" name="id" hidden value="<%= editAddress._id %>">
+            <div class="col-md-12">
+                <label for="validationCustom01" class="form-label">Name</label>
+                <input type="text" class="form-control" id="validationCustom01"
+                    name="name" value="<%= editAddress.name %>" required>
+            </div>
+            <div class="col-md-12">
+                <label for="validationCustom02" class="form-label">Email</label>
+                <input type="text" class="form-control" id="validationCustom02"
+                    name="email" value="<%= editAddress.email %>" required>
+            </div>
+            <div class="col-md-12">
+                <label for="validationCustom02" class="form-label">Mobile Number</label>
+                <input type="text" class="form-control" id="validationCustom02"
+                    name="mobileNumber" value="<%= editAddress.mobile %>" required>
+            </div>
+            <div class="col-md-6 mt-3">
+                <label for="validationCustom04" class="form-label">Country</label>
+                <select class="form-select" id="validationCustom04" name="country"
+                    required>
+                    <option selected disabled><%= editAddress.country %></option>
+                    <option>India</option>
+                </select>
+            </div>
+            <div class="col-md-6 mt-3">
+                <label for="validationCustom04" class="form-label">State</label>
+                <select class="form-select" id="validationCustom04" name="state"
+                    required>
+                    <option selected value="<%= editAddress.state %>"><%= editAddress.state %></option>
+                    <option>Kerala</option>
+                </select>
+            </div>
+            <div class="mb-3 col-md-6 mt-3">
+                <label for="exampleFormControlTextarea1"
+                    class="form-label">Address</label>
+                <input class="form-control" id="exampleFormControlTextarea1" rows="2"
+                    name="address" value="<%= editAddress.address %>">
+            </div>
+            <div class="col-md-6 mt-3">
+                <label for="validationCustom05" class="form-label">Land Mark</label>
+                <input type="text" class="form-control" id="validationCustom05"
+                    name="landMark" value="<%= editAddress.landmark %>" required>
+            </div>
+            <div class="col-md-4">
+                <label for="validationCustom05" class="form-label">Pincode</label>
+                <input type="text" class="form-control" id="validationCustom05"
+                    name="pincode" value="<%= editAddress.pincode %>" required>
+            </div>
+            <div class="col-12 mt-3">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+<%- include('../layouts/homefooter.ejs') %>

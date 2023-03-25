@@ -1,0 +1,95 @@
+<%- include('../layouts/adminheader.ejs') %>
+  <div class="fluid-container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active fw-semibold" aria-current="page" href="/admin/addCoupon">Add
+                Coupon</a>
+            </li>
+          </ul>
+          
+        </div>
+      </div>
+    </nav>
+    <div class="table-responsive text-nowrap mt-5 fluid-container">
+      <table class="table table-bordered table-responsive">
+        <thead>
+          <tr>
+            <th>Coupon code</th>
+            <th>type</th>
+            <th>value</th>
+            <th>min order</th>
+            <th>max discount</th>
+            <th>Status</th>
+            <th>expire date</th>
+            <th>remaining</th>
+            <th>Actions</th>
+            
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <% couponData.forEach((coupon) => {%>
+            
+          
+            <tr>
+              <td class="fw-semibold">
+                <%= coupon.code %>
+              </td>
+              <td>
+                <span class="badge bg-label-warning me-1"><%= coupon.type %></span>
+              </td>
+              <td>
+                <%= coupon.value %>
+              </td>
+              <td>
+                <%= coupon.minOrder %>
+              </td>
+              <td>
+                <%= coupon.maxDiscount %>
+              </td>
+              <td>
+                <span class="badge bg-label-success me-1">Active</span>
+              </td>
+              <td>
+                <%= coupon.expireDate %>
+              </td>
+              <td>
+                <%= coupon.totalUsage %>
+              </td>
+              <td>
+                <a href="/admin/editCoupon/?id=<%= coupon._id %>" class="btn btn-primary">edit</a>
+              </td>
+            </tr>
+            <%}); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script>
+    document.getElementById("disable-link").addEventListener("click", function(event) {
+    event.preventDefault(); // prevent the link from redirecting immediately
+    swal({
+        title: "Are you sure?",
+        text: "Once blocked,  user you will not be able to recover",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            // If user clicks the confirm button, redirect to the delete route
+            window.location.href = document.getElementById("disable-link").href;
+        } else {
+            // If user clicks the cancel button, do nothing
+        }
+    });
+});
+
+  </script>
+  <%- include('../layouts/adminfooter.ejs') %>

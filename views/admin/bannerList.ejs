@@ -1,0 +1,44 @@
+<%- include('../layouts/adminheader.ejs') %>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active fw-semibold" aria-current="page" href="/admin/addBanner">Add
+            Banner</a>
+        </li>
+      </ul>
+      
+    </div>
+  </div>
+</nav>
+<% bannerData.forEach((banner) => {%>
+  
+
+<div class="p-5 text-left bg-image mt-3 rounded" style="position: relative; background-image: url('/bannerImage/<%= banner.image %>'); background-size: cover;">
+  <div class="mask">
+      <div class="d-flex h-100">
+          <div class="text-dark">
+            
+            
+              <h1 class="mb-3"><%= banner.heading %></h1>
+              <h2 class="mb-3"><%= banner.subtitle %></h2>
+              <a class="btn btn-primary btn-sm" href="#!" role="button"><%= banner.btnText %></a>
+              <div class="dropdown " style="padding-left: 837px; position: absolute;" >
+                <button style="width: 70px; height: 33px;" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/admin/editBanner/?id=<%= banner._id %>">Edit</a></li>
+                  <li><a class="dropdown-item" href="/admin/deleteBanner/?id=<%= banner._id %>">Delete</a></li>
+                </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<%}); %>
+<%- include('../layouts/adminfooter.ejs') %>
