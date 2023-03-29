@@ -628,9 +628,10 @@ const changeQuantity = async (req, res,next) => {
         const cartData = await Cart.findOneAndUpdate({ userData: userData, 'products.productId': productId }, {
         })
         const product = cartData.products.find(item => item.productId == productId)
-
+        const productData = await Product.findOne({_id:productId})
+        const stockQuantity = productData.stock
         const afterQuantity = product.quantity + Number(quantity);
-        if (afterQuantity != 0) {
+        if (afterQuantity != 0 || afterQuantity < stockQuantity) {
             if (quantity == 1) {
                 await Cart.findOneAndUpdate({ userData: userData, 'products.productId': productId }, {
                     $inc: { 'products.$.quantity': quantity, 'products.$.price': salePrice }

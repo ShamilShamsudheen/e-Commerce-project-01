@@ -26,6 +26,7 @@
     "nodemon": "^2.0.20",
     "randomstring": "^1.2.3",
     "razorpay": "^2.8.6",
+    "sharp": "^0.32.0",
     "twilio": "^4.7.2"
   }
 }

@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const excelJS = require('exceljs')
 const moment = require('moment');
+const sharp =require('sharp');
 
 
 
@@ -131,10 +132,8 @@ const insertProducts = async (req, res,next) => {
 
             res.render('add-product', { message: "Please check your form" });
         } else {
-            const imagesUpload = []
-            for (let i = 0; i < req.files.length; i++) {
-                imagesUpload[i] = req.files[i].filename
-            }
+           
+            
             const productData = new Products({
                 productName: req.body.productName,
                 price: req.body.price,
@@ -146,6 +145,30 @@ const insertProducts = async (req, res,next) => {
 
             const products = await productData.save()
             if (products) {
+                for (let i = 0; i < req.files.length; i++) {
+                    const imagesUpload = req.files[i].filename
+                    const originalPath = req.files[i].path
+                    const extension = imagesUpload.split('.').pop()
+                    const resizedFilename = `${imagesUpload}_resized.${extension}`
+                    const resizedPath = `public/product-img/${resizedFilename}`
+    
+                    // Use sharp to resize and crop the image to 200x100 pixels
+                    sharp(originalPath)
+                        .resize(550, 650)
+                        .toFile(resizedPath, (err, info) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                fs.unlink(originalPath, (err) => {
+                                    if (err) {
+                                        console.log(err)
+                                    }
+                                })
+                            }
+                        })
+                    // Use await to ensure the update is completed before redirecting
+                    await Products.findOneAndUpdate({ _id: products._id }, { $push: { images: resizedFilename } })
+                }
                 res.redirect('/admin/productlist')
             }
         }
@@ -191,8 +214,28 @@ const updateProducts = async (req, res,next) => {
         } else {
 
             for (let i = 0; i < req.files.length; i++) {
+               
                 const imagesUpload = req.files[i].filename
-                const poductData = await Products.updateOne({ _id: id }, { $push: { image: imagesUpload } })
+                    const originalPath = req.files[i].path
+                    const extension = imagesUpload.split('.').pop()
+                    const resizedFilename = `${imagesUpload}_resized.${extension}`
+                    const resizedPath = `public/product-img/${resizedFilename}`
+    
+                    // Use sharp to resize and crop the image to 200x100 pixels
+                    sharp(originalPath)
+                        .resize(200, 300)
+                        .toFile(resizedPath, (err, info) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                fs.unlink(originalPath, (err) => {
+                                    if (err) {
+                                        console.log(err)
+                                    }
+                                })
+                            }
+                        })
+                const poductData = await Products.updateOne({ _id: id }, { $push: { image: resizedFilename } })
             }
             const productData = await Products.findByIdAndUpdate({ _id: req.body.id }, {
                 $set: {

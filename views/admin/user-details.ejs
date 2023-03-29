@@ -28,7 +28,7 @@
               </td>
               <td>
                 <% if(user.status==true){%>
-                <a href="/admin/blockUser?id=<%= user._id %>" class="btn btn-danger" id="block-link">Block</a>
+                <a  onclick="blockUser('<%= user._id %>')" class="btn btn-danger" >Block</a>
                 <% }else{ %>
                     <a href="/admin/unblockUser?id=<%= user._id %>" class="btn btn-success">Unblock</a>
                     <% } %>
@@ -40,27 +40,28 @@
       </table>
     </div>
   </div>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <script>
-    document.getElementById("block-link").addEventListener("click", function(event) {
-    event.preventDefault(); // prevent the link from redirecting immediately
-    swal({
-        title: "Are you sure?",
-        text: "Once blocked,  user you will not be able to recover",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-    })
-    .then((willDelete) => {
-        if (willDelete) {
-            // If user clicks the confirm button, redirect to the delete route
-            window.location.href = document.getElementById("block-link").href;
-        } else {
-            // If user clicks the cancel button, do nothing
-        }
-    });
-});
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
 
-  </script>
+        function blockUser(userId1){
+          console.log('ugyuguyg')
+          const userId = userId1
+          Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            
+           location.href = '/admin/blockUser?id='+ userId
+          }
+        })
+        
+        }
+        </script>
 
   <%- include('../layouts/adminfooter.ejs') %>
