@@ -7,16 +7,17 @@ const Coupon = require('../models/couponModel')
 const Banner = require('../models/bannerModel')
 const Category = require('../models/categoryModel')
 const bcrypt = require('bcrypt');
+require('dotenv').config();
 const Razorpay = require('razorpay');
 const { ObjectId } = require('mongodb');
 const crypto = require("crypto");
 const { populate } = require('../models/couponModel');
-require('dotenv').config();
+
 
 
 const instance = new Razorpay({
-    key_id: process.env.razorpayId,
-    key_secret: process.env.rezorpayKey
+    key_id: process.env.KEY_ID,
+    key_secret: process.env.KEY_SECRET,
 });
 
 const accountSid = process.env.twilioAccountSid;
@@ -89,6 +90,7 @@ const insertUser = async (req, res,next) => {
 //login page loading
 const loginLoad = async (req, res,next) => {
     try {
+        console.log(authToken)
 
         if (req.session.userLogged) {
             res.redirect('/home')
@@ -138,14 +140,15 @@ const verifiedLogin = async (req, res,next) => {
 const loadHome = async (req, res,next) => {
     try {
         const bannerData = await Banner.find({ status: "Active" })
-        console.log(bannerData);
-        console.log(req.session);
+        const latestMen = await Product.find({ category: "men's" }).limit(2);
+        const latestWomen = await Product.find({ category: "women's" }).limit(2);
+        const latestKid = await Product.find({ category: "kid's" }).limit(2);
         if (req.session.userLogged) {
 
             const userData = await User.findById({ _id: req.session.user_id })
-            res.render('home', { userData, bannerData });
+            res.render('home', { userData, bannerData,latestMen,latestWomen,latestKid });
         } else {
-            res.render('home', { bannerData });
+            res.render('home', { bannerData,latestMen,latestWomen,latestKid });
         }
 
     } catch (error) {
@@ -343,7 +346,7 @@ const loadCart = async (req, res,next) => {
     try {
         const userCart = await Cart.findOne({ userData: req.session.user_id }).populate('products.productId')
         const userData = await User.findById({ _id: req.session.user_id })
-        console.log(userCart);
+        // console.log(userCart);
 
         const cartProducts = userCart.products
         const userCartProductsId = cartProducts.map(values => values.productId)
@@ -366,7 +369,7 @@ const loadCart = async (req, res,next) => {
             acc.totalPrice += cur.price;
             return acc;
         }, { totalPrice: 0 })
-        console.log(cartProducts + "evde");
+        // console.log(cartProducts + "evde");
         res.render('pageCart', { cartProducts, products, userData, totalPrice, userCart })
 
     } catch (error) {
@@ -380,7 +383,7 @@ const addToCart = async (req, res,next) => {
 
         const productData = await Product.findById({ _id: req.query.id })
         const UserId = await Cart.findOne({ userData: req.session.user_id })
-        console.log(typeof productData.price);
+        // console.log(typeof productData.price);
         const product = {
             productId: productData._id,
             price: productData.price,
@@ -388,7 +391,7 @@ const addToCart = async (req, res,next) => {
         }
         if (UserId) {
             let proExit = UserId.products.findIndex(product => product.productId == req.query.id)
-            console.log(proExit);
+            // console.log(proExit);
             if (proExit != -1) {
                 await Cart.updateOne({ userData: req.session.user_id, 'products.productId': req.query.id },
                     {
@@ -454,8 +457,8 @@ const addAddress = async (req, res,next) => {
 // cart item delete part
 const deleteCart = async (req, res,next) => {
     try {
-        console.log('sdfgnmvdfghj')
-        console.log(req.query.id)
+        
+        // console.log(req.query.id)
         const cartData = await Cart.updateOne({ userData: req.session.user_id }, { $pull: { products: { _id: req.query.id } } })
         res.redirect('/pageCart')
     } catch (error) {
@@ -488,7 +491,7 @@ const editUserAddress = async (req, res,next) => {
             const editAddress = await User.findOne({ 'address._id': id }, { 'address.$': 1, _id: 0 })
             editAddress.address.forEach((value) => {
                 let addressData = value
-                console.log(addressData);
+                // console.log(addressData);
                 res.render('edit-address', { editAddress: addressData, userData })
             })
         }
@@ -519,14 +522,14 @@ const updateUserAddress = async (req, res,next) => {
 }
 
 // process to pay
-const processToPay = async (req, res,next) => {
-    try {
-        console.log(req.body);
-        res.render('payment-info', { userData })
-    } catch (error) {
-        next(error);
-    }
-}
+// const processToPay = async (req, res,next) => {
+//     try {
+//         console.log(req.body);
+//         res.render('payment-info', { userData })
+//     } catch (error) {
+//         next(error);
+//     }
+// }
 
 // order details page
 const addOrderDetails = async (req, res,next) => {
@@ -564,9 +567,7 @@ const addOrderDetails = async (req, res,next) => {
             payment: req.body.paymentMethod,
             paymentStatus: "Pending"
         })
-        console.log(orderDetails)
-        const orderData = await orderDetails.save();
-        console.log(orderData);
+       
         await Coupon.updateOne({ _id: userCart.coupon }, {
             $push: {
                 usedUser: req.session.user_id
@@ -578,15 +579,19 @@ const addOrderDetails = async (req, res,next) => {
             }
         })
         
-        if (orderData.payment == "Razor pay") {
+        if (orderDetails.payment == "Razor pay") {
+            const orderData = await orderDetails.save();
             instance.orders.create({
                 amount: parseInt(totalPrice) * 100,
                 currency: "INR",
                 receipt: orderData._id.toString()
             }).then((orders) => {
+               
                 res.json({ order: orders })
             })
         }else{
+           
+        await orderDetails.save();
             res.json({success:true})
         }
 
@@ -602,7 +607,7 @@ const loadOrderDetails = async (req, res,next) => {
     try {
         const userData = await User.findById({ _id: req.session.user_id })
         const orderData = await Order.find({ userId: req.session.user_id }).sort({ date: -1 })
-        console.log(orderData);
+        // console.log(orderData);
 
         res.render('order-details', { userData, orderData })
     } catch (error) {
@@ -613,7 +618,7 @@ const loadOrderDetails = async (req, res,next) => {
 //cancel order 
 const cancelOrder = async (req, res,next) => {
     try {
-        console.log("ethifvghbhjfvghvbsdhgvh")
+        
         console.log(req.query.id);
         await Order.findByIdAndUpdate({ _id: req.query.id }, { $set: { status: "canceled" } })
         res.redirect('/order-details')
@@ -622,52 +627,70 @@ const cancelOrder = async (req, res,next) => {
     }
 }
 
-const changeQuantity = async (req, res,next) => {
+//change quantity
+const changeQuantity = async (req, res, next) => {
     try {
-        const { userData, productId, quantity, salePrice, id } = req.body;
-        const cartData = await Cart.findOneAndUpdate({ userData: userData, 'products.productId': productId }, {
-        })
-        const product = cartData.products.find(item => item.productId == productId)
-        const productData = await Product.findOne({_id:productId})
-        const stockQuantity = productData.stock
-        const afterQuantity = product.quantity + Number(quantity);
-        if (afterQuantity != 0 || afterQuantity < stockQuantity) {
-            if (quantity == 1) {
-                await Cart.findOneAndUpdate({ userData: userData, 'products.productId': productId }, {
-                    $inc: { 'products.$.quantity': quantity, 'products.$.price': salePrice }
-                })
-                res.json({ success: true })
-            } else {
-
-                await Cart.findOneAndUpdate({ userData: userData, 'products.productId': productId }, {
-                    $inc: { 'products.$.quantity': quantity, 'products.$.price': -salePrice }
-                })
-                res.json({ success: false })
+      const { userData, productId, quantity, salePrice, id } = req.body;
+      const cartData = await Cart.findOneAndUpdate(
+        { userData: userData, "products.productId": productId },
+        {}
+      );
+      const product = cartData.products.find((item) => item.productId == productId);
+      const productData = await Product.findOne({ _id: productId });
+      const stockQuantity = productData.stock;
+      const afterQuantity = product.quantity + Number(quantity);
+      if (afterQuantity > stockQuantity) {
+        // Return an error response if the quantity exceeds the available stock
+        res.json({ success: false, message: "Out of stock" });
+      } else if (afterQuantity != 0) {
+        if (quantity == 1) {
+          await Cart.findOneAndUpdate(
+            { userData: userData, "products.productId": productId },
+            {
+              $inc: { "products.$.quantity": quantity, "products.$.price": salePrice },
             }
+          );
+          res.json({ success: true });
         } else {
-            const productDelete = await Cart.updateOne(
-                { userId: req.session.loggedId },
-                { $pull: { products: { productId: productId } } }
-            )
-            res.redirect('/cart')
+          await Cart.findOneAndUpdate(
+            { userData: userData, "products.productId": productId },
+            {
+              $inc: { "products.$.quantity": quantity, "products.$.price": -salePrice },
+            }
+          );
+          res.json({ success: false });
         }
+      } else {
+        const productDelete = await Cart.updateOne(
+          { userId: req.session.loggedId },
+          { $pull: { products: { productId: productId } } }
+        );
+        res.redirect("/cart");
+      }
     } catch (error) {
-        next(error);
+      next(error);
     }
-}
+  };
+  
+
+// verfy payment
 const verifyPayment = async (req, res,next) => {
     try {
-        console.log(req.body);
+
+       
+        // console.log(req.body);
         const { order, payment } = req.body;
         let hmac = crypto.createHmac('sha256', 'PK56Dojde9oVTsHKb2YXWfB7')
         hmac.update(payment.razorpay_order_id + '|' + payment.razorpay_payment_id)
         hmac = hmac.digest("hex")
+
         if (hmac == payment.razorpay_signature) {
             await Order.updateOne({ _id: order.receipt }, {
                 $set: {
                     paymentStatus: 'Payed'
                 }
             })
+            
             res.json({ success: true })
         } else {
             await Order.updateOne({ _id: order.receipt }, {
@@ -675,6 +698,7 @@ const verifyPayment = async (req, res,next) => {
                     paymentStatus: 'Failed'
                 }
             })
+            
             res.json({ success: false })
         }
     } catch (error) {
@@ -685,13 +709,14 @@ const verifyPayment = async (req, res,next) => {
 // conformation payment page
 const paymentConformation = async (req, res,next) =>{
     try {
+        // console.log(req.session.orderDetails)
         const cartData = await Cart.findOne({ userData: req.session.user_id }).populate('products.productId')
         const productIds = cartData.products
         productIds.forEach(async(product)=>{
             await Product.updateOne({_id:product.productId._id},{$inc:{stock:-(product.quantity)}})
         })
         
-        console.log(productIds)
+        // console.log(productIds)
         await Cart.updateOne({ userData: req.session.user_id }, {
             $unset: {
                 products: ''
@@ -711,9 +736,9 @@ const applyCoupon = async (req, res,next) => {
         const couponDetails = await Coupon.findOne({ code: couponCode })
         const coupounApplied = await Cart.findOne({ $and: [{ userData: req.session.user_id }, { coupon: { $exists: true, $ne: null } }] })
         if (!coupounApplied) {
-            console.log(req.session.user_id)
+            // console.log(req.session.user_id)
             const cartData = await Cart.findOne({ userData: req.session.user_id })
-            console.log(cartData)
+            // console.log(cartData)
             const product = await cartData.products
             const { totalPrice } = product.reduce((acc, cur) => {
                 acc.totalPrice += cur.price;
@@ -768,7 +793,7 @@ const loadWishlist = async (req, res,next) => {
 //insert wishlist 
 const insertWishlist = async (req, res,next) => {
     try {
-        console.log(req.query.id)
+        // console.log(req.query.id)
         const productData = await Product.findById({ _id: req.query.id })
         const userId = await Wishlist.findOne({ userData: req.session.user_id })
         const product = {
@@ -812,7 +837,7 @@ const removeProduct = async (req, res,next) => {
 //move to cart
 const moveToCart = async (req, res,next) => {
     try {
-        console.log("id:"+req.query.id)
+        // console.log("id:"+req.query.id)
         const productData = await Product.findById({ _id: req.query.id })
         const UserId = await Cart.findOne({ userData: req.session.user_id })
         const wishData = await Wishlist.findOne({ userData: req.session.user_id })
@@ -863,20 +888,31 @@ const moveToCart = async (req, res,next) => {
 }
 
 //filter Category post
-const filterCategory =async (req, res,next) =>{
+const filterCategory = async (req, res, next) => {
     try {
-        const category=req.body.category
-        const filterProduct = {}
-        if(category){
-            filterProduct.category={$in:category}
+        const category = req.body.category;
+        const sort = req.body.sort; // Add this line
+
+        const filterProduct = {};
+        if (category) {
+            filterProduct.category = { $in: category };
         }
-        const filterCategory = await Product.find(filterProduct)
-        console.log(filterCategory)
-        res.json({ filterCategory })
+        let filterCategory = await Product.find(filterProduct)
+        if (sort === '1') { // Add this block
+            filterCategory.sort((a, b) => a.price - b.price);
+        }else if(sort == '-1'){
+            filterCategory.sort((a, b) => b.price - a.price);
+        }else{
+
+        }
+        
+
+        res.json({ filterCategory });
     } catch (error) {
-        next(error)
+        next(error);
     }
-}
+};
+
 
 module.exports = {
     loadRegister,
@@ -904,7 +940,7 @@ module.exports = {
     deleteUserAddress,
     editUserAddress,
     updateUserAddress,
-    processToPay,
+    // processToPay,
     addOrderDetails,
     loadOrderDetails,
     cancelOrder,

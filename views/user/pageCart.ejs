@@ -27,6 +27,7 @@
                       <!-- <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p> -->
                     </div>
                     <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+
                       <button class="btn btn-link px-2"
                         onclick="changeqnty('<%= userCart.userData %>','<%= data.productId._id %>','<%= data.productId.price %>','<%= data.id %>',-1)">-
                         <!-- <i class="fas fa-minus"></i> -->
@@ -39,6 +40,7 @@
                         onclick="changeqnty('<%= userCart.userData %>','<%= data.productId._id %>','<%= data.productId.price %>','<%= data.id %>',1)">+
                         <!-- <i class="fas fa-plus"></i> -->
                       </button>
+
                     </div>
                     <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                       <h5 id="<%= data.id %>" class="mb-0">
@@ -133,12 +135,30 @@
             document.getElementById("totalPrice").innerHTML = Number(total) + Number(salePrice)
 
           } else if (response.success == false) {
+            if(response.message == "Out of Stock") {
+              const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 2200,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Cannnot increase out of stock'
+                        })
+            }else{
             let value = document.getElementById(productId).value
             document.getElementById(productId).value = Number(value) - 1
             let Price = document.getElementById(id).innerHTML
             document.getElementById(id).innerHTML = Number(Price) - Number(salePrice)
             let total = document.getElementById("totalPrice").innerHTML
             document.getElementById("totalPrice").innerHTML = Number(total) - Number(salePrice)
+            }
           } else {
             alert("Product Deleted")
             location.reload()
