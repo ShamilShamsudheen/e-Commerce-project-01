@@ -191,7 +191,6 @@ const loadSingleproduct = async (req, res,next) => {
         const userData = await User.findOne({ _id: req.session.user_id })
         const id = req.query.id
         const productData = await Product.findById({ _id: id })
-        console.log(productData.image);
         if(userData){
             if (productData) {
 

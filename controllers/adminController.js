@@ -453,7 +453,7 @@ const deleteCategory = async (req, res,next) => {
 // order list page part
 const loadOrder = async (req, res,next) => {
     try {
-        const orderData = await Order.find({})
+        const orderData = await Order.find({}).sort({date:-1})
         console.log(orderData);
 
         res.render('orderList', { orderData })

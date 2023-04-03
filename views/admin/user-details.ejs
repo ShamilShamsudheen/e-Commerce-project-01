@@ -28,7 +28,7 @@
               </td>
               <td>
                 <% if(user.status==true){%>
-                <a  onclick="blockUser('<%= user._id %>')" class="btn btn-danger" >Block</a>
+                <a  onclick="blockUser('<%= user._id %>')" class="btn btn-danger text-white" >Block</a>
                 <% }else{ %>
                     <a href="/admin/unblockUser?id=<%= user._id %>" class="btn btn-success">Unblock</a>
                     <% } %>

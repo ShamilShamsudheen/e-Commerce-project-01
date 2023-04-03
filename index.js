@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 //error handler
-const errorHandler = require('./errHandler');
+const errorHandler = require('./middleware/errorHandler')
 
 
 //for userRouter
@@ -28,7 +28,8 @@ app.set('view engine','ejs');
 const path = require ('path');
 app.use(express.static(path.join(__dirname,'public')))
 
-app.use(errorHandler);
+
+app.use(errorHandler.errorHandler);
 //server port
 app.listen(3000,function(){
     console.log("server running....");

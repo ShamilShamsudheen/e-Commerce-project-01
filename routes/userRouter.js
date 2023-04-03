@@ -7,6 +7,7 @@ user_route.use(session({secret:config.sessionSecret}));
 
 const auth = require('../middleware/auth');
 const blockAuth = require('../middleware/blockAuth')
+const errorHandler = require('../middleware/errorHandler')
 
 
 user_route.use((req, res, next) => {
@@ -75,6 +76,7 @@ user_route.post('/verify-otp',userController.verifyOtp);
 
 user_route.get('/logout',auth.isLogin,userController.userLogout)
 
+user_route.use(errorHandler.errorHandler)
 
 
 module.exports = user_route ; 

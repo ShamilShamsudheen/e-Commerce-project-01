@@ -30,7 +30,7 @@
                             <img src="/product-img/<%= product.image[0] %>" class="d-block img-fluid rounded" alt="product-image" id="myimage"  width="250" height="340" > 
                         </div>
                         <% for (let index = 1; index < product.image.length; index++){ %>
-                      <div class="carousel-item active img-zoom-container">
+                      <div class="carousel-item active">
                         <img src="/product-img/<%= product.image[index] %>" class="d-block img-fluid rounded" alt="product-image" id="myimage" width="250" height="340"  >
                         
                       </div>
@@ -53,7 +53,6 @@
             <div class="right-content">
                 
                 <h4> <%= product.productName %> </h4>
-                <!-- <span class="text-dark">₹<%= product.price %></span> -->
                 <ul class="stars">
                     <li><i class="fa fa-star"></i></li>
                     <li><i class="fa fa-star"></i></li>
