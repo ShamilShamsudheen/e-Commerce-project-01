@@ -33,10 +33,10 @@ user_route.post('/',userController.verifiedLogin);
 user_route.post('/login',userController.verifiedLogin);
 
 
-user_route.get('/home',auth.isLogin,blockAuth.isBlocked,userController.loadHome);
-user_route.get('/about',auth.isLogin,blockAuth.isBlocked,userController.loadAbout);
-user_route.get('/products',auth.isLogin,blockAuth.isBlocked,userController.loadProducts);
-user_route.get('/single-product',auth.isLogin,blockAuth.isBlocked,userController.loadSingleproduct);
+user_route.get('/home',userController.loadHome);
+user_route.get('/about',userController.loadAbout);
+user_route.get('/products',userController.loadProducts);
+user_route.get('/single-product',userController.loadSingleproduct);
 user_route.get('/pageCart',auth.isLogin,blockAuth.isBlocked,userController.loadCart)
 user_route.post('/changeQuantity',auth.isLogin,blockAuth.isBlocked,userController.changeQuantity)
 user_route.get('/addToCart',auth.isLogin,blockAuth.isBlocked,userController.addToCart)

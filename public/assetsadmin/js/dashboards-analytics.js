@@ -24,7 +24,7 @@
     totalRevenueChartOptions = {
       series: [
         {
-          name: '2021',
+          name: '2023',
           data: data.orderSalesCount
         }
       ],

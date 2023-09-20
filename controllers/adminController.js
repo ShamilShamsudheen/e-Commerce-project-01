@@ -129,7 +129,6 @@ const insertProducts = async (req, res,next) => {
     try {
         console.log(req.files);
         if (!req.body.productName.trim() || !req.body.price.trim() || !req.body.stock || !req.body.category || !req.files || !req.body.description.trim()) {
-
             res.render('add-product', { message: "Please check your form" });
         } else {
            

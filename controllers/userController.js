@@ -90,7 +90,7 @@ const insertUser = async (req, res,next) => {
 //login page loading
 const loginLoad = async (req, res,next) => {
     try {
-        console.log(authToken)
+        
 
         if (req.session.userLogged) {
             res.redirect('/home')
